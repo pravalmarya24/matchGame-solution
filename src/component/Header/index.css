@@ -1,0 +1,52 @@
+.navbar-bg-container {
+  background-color: #2c0e3a;
+  height: 15vh;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+}
+
+.website-logo {
+  height: 44px;
+  width: 200px;
+}
+
+.score-container {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+}
+
+.score-para {
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.span-element {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 400;
+  color: #fec653;
+}
+
+.timer-container {
+  display: flex;
+  align-items: center;
+}
+
+.timer-logo {
+  height: 22px;
+  width: 22px;
+}
+
+.sec-count {
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 500;
+  color: #fec653;
+  padding-left: 10px;
+}
