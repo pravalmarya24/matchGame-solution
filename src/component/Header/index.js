@@ -1,7 +1,10 @@
 import './index.css'
 
 const Header = props => {
-  const {scores, seconds} = props
+  const {scores, seconds, intervalId} = props
+  if (seconds <= 0) {
+    clearInterval(intervalId)
+  }
   return (
     <nav className="navbar-bg-container">
       <img

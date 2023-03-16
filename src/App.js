@@ -256,24 +256,13 @@ class App extends Component {
     thumbList: [],
     activeBtnId: tabsList[0].tabId,
     score: 0,
-    randomImageUrl:
-      'https://assets.ccbp.in/frontend/react-js/match-game/orange-img.png',
+    randomImageUrl: imagesList[0].imageUrl,
     seconds: 60,
+    intervalId: '',
   }
 
   componentDidMount = () => {
     this.startTimer()
-  }
-
-  componentWillUnmount = () => {
-    this.stop()
-  }
-
-  stop = () => {
-    const {seconds} = this.state
-    if (seconds <= 0) {
-      this.stopTimer()
-    }
   }
 
   startTimer = () => {
@@ -282,14 +271,7 @@ class App extends Component {
         seconds: prevState.seconds - 1,
       }))
     }, 1000)
-  }
-
-  stopTimer = () => {
-    const {seconds} = this.state
-    if (seconds <= 0) {
-      this.setState({seconds: 0})
-      clearInterval(this.intervalId)
-    }
+    this.setState({intervalId: this.intervalId})
   }
 
   onChangeCategory = tabId => {
@@ -359,15 +341,88 @@ class App extends Component {
     )
   }
 
+  onPlayAgain = () => {
+    this.setState({score: `60 sec`, seconds: 0})
+  }
+
+  renderSuccessView = () => {
+    const {score} = this.state
+    return (
+      <div className="score-card-container">
+        <div className="trophy-container">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+            alt="trophy"
+            className="trophy-img-size"
+          />
+        </div>
+        <p className="your-score-para">YOUR SCORE</p>
+        <p className="play-again-para">{score}</p>
+        <button
+          type="button"
+          className="play-again-btn"
+          onClick={this.onPlayAgain}
+        >
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+            alt="reset"
+            className="reset-img-size"
+          />
+          PLAY AGAIN
+        </button>
+      </div>
+    )
+  }
+
+  renderFailureView = () => (
+    <div className="score-card-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+        alt="trophy"
+        className="trophy-img-size"
+      />
+      <p className="your-score-para">YOUR SCORE</p>
+      <p className="play-again-para">0</p>
+      <button
+        type="button"
+        className="play-again-btn"
+        onClick={this.onPlayAgain}
+      >
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+          alt="reset"
+          className="reset-img-size"
+        />
+        PLAY AGAIN
+      </button>
+    </div>
+  )
+
+  renderViews = () => {
+    const {seconds} = this.state
+    switch (seconds) {
+      case seconds:
+        return this.renderSuccessView()
+      default:
+        return this.renderFailureView()
+    }
+  }
+
   render() {
-    const {score, seconds} = this.state
+    const {score, seconds, intervalId} = this.state
     return (
       <>
-        <Header scores={score} seconds={seconds} />
-        <div className="matched-game-bg-container">
-          {this.renderMatchedGame()}
-          {this.renderFruitsButton()}
-        </div>
+        <Header scores={score} seconds={seconds} intervalId={intervalId} />
+        {seconds === 0 ? (
+          <div className="matched-game-score-card-bg-container">
+            {this.renderViews()}
+          </div>
+        ) : (
+          <div className="matched-game-bg-container">
+            {this.renderMatchedGame()}
+            {this.renderFruitsButton()}
+          </div>
+        )}
       </>
     )
   }
