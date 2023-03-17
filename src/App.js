@@ -253,7 +253,6 @@ const imagesList = [
 // Replace your code here
 class App extends Component {
   state = {
-    thumbList: [],
     activeBtnId: tabsList[0].tabId,
     score: 0,
     randomImageUrl: imagesList[0].imageUrl,
@@ -278,17 +277,7 @@ class App extends Component {
 
   onChangeCategory = tabId => {
     this.setState({activeBtnId: tabId})
-    // const {activeBtnId} = this.state
-
-    const filterThumbnail = imagesList.filter(each => each.category === tabId)
-
-    this.setState({thumbList: filterThumbnail})
-    this.setState(prevState => ({
-      activeBtn: !prevState.activeBtn,
-    }))
   }
-
-  mismatched = () => this.renderFailureView()
 
   onChangethumbId = id => {
     const randomNumber = Math.ceil(Math.random() * 10)
@@ -302,14 +291,17 @@ class App extends Component {
       this.setState(prevState => ({
         score: prevState.score + 1,
       }))
-    }
-    if (filterThumb[0].id !== randomImageUrl.id) {
-      this.mismatched()
+    } else if (filterThumb[0].id !== randomImageUrl.id) {
+      //   this.mismatched()
+      this.setState({isMisMatched: true})
     }
   }
 
   renderFruitsButton = () => {
-    const {thumbList, activeBtnId} = this.state
+    const {activeBtnId} = this.state
+    const filterThumbnail = imagesList.filter(
+      each => each.category === activeBtnId,
+    )
     return (
       <>
         <ul className="btn-unordered-list">
@@ -323,7 +315,7 @@ class App extends Component {
           ))}
         </ul>
         <ul className="thumbnail-container">
-          {thumbList.map(each => (
+          {filterThumbnail.map(each => (
             <Thumbnail
               thumbnails={each}
               key={each.id}
@@ -349,7 +341,8 @@ class App extends Component {
   }
 
   onPlayAgain = () => {
-    this.setState({score: `60 sec`, seconds: 0})
+    this.setState({seconds: `60`, score: 0, isMisMatched: false})
+    this.startTimer()
   }
 
   renderSuccessView = () => {
@@ -422,12 +415,18 @@ class App extends Component {
         <Header scores={score} seconds={seconds} intervalId={intervalId} />
         {seconds === 0 ? (
           <div className="matched-game-score-card-bg-container">
-            {isMisMatched ? this.mismatched() : this.renderViews()}
+            {this.renderViews()}
           </div>
         ) : (
           <div className="matched-game-bg-container">
-            {this.renderMatchedGame()}
-            {this.renderFruitsButton()}
+            {isMisMatched ? (
+              this.renderFailureView()
+            ) : (
+              <>
+                {this.renderMatchedGame()}
+                {this.renderFruitsButton()}
+              </>
+            )}
           </div>
         )}
       </>
