@@ -1,3 +1,9 @@
+.unordered-list {
+  list-style-type: none;
+  background-color: #2c0e3a;
+  background-size: cover;
+}
+
 .navbar-bg-container {
   background-color: #2c0e3a;
   height: 15vh;

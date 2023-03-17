@@ -259,6 +259,8 @@ class App extends Component {
     randomImageUrl: imagesList[0].imageUrl,
     seconds: 60,
     intervalId: '',
+    isObject: false,
+    isMisMatched: false,
   }
 
   componentDidMount = () => {
@@ -286,10 +288,12 @@ class App extends Component {
     }))
   }
 
+  mismatched = () => this.renderFailureView()
+
   onChangethumbId = id => {
     const randomNumber = Math.ceil(Math.random() * 10)
     const randomImage = imagesList[randomNumber]
-    this.setState({randomImageUrl: randomImage})
+    this.setState({randomImageUrl: randomImage, isObject: true})
 
     const {randomImageUrl} = this.state
 
@@ -298,6 +302,9 @@ class App extends Component {
       this.setState(prevState => ({
         score: prevState.score + 1,
       }))
+    }
+    if (filterThumb[0].id !== randomImageUrl.id) {
+      this.mismatched()
     }
   }
 
@@ -329,11 +336,11 @@ class App extends Component {
   }
 
   renderMatchedGame = () => {
-    const {randomImageUrl} = this.state
+    const {randomImageUrl, isObject} = this.state
     return (
       <div className="match-image-container">
         <img
-          src={randomImageUrl.imageUrl}
+          src={isObject ? randomImageUrl.imageUrl : randomImageUrl}
           alt="match"
           className="matched-img-size"
         />
@@ -409,13 +416,13 @@ class App extends Component {
   }
 
   render() {
-    const {score, seconds, intervalId} = this.state
+    const {score, seconds, intervalId, isMisMatched} = this.state
     return (
       <>
         <Header scores={score} seconds={seconds} intervalId={intervalId} />
         {seconds === 0 ? (
           <div className="matched-game-score-card-bg-container">
-            {this.renderViews()}
+            {isMisMatched ? this.mismatched() : this.renderViews()}
           </div>
         ) : (
           <div className="matched-game-bg-container">

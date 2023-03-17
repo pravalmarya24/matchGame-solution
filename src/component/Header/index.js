@@ -6,27 +6,29 @@ const Header = props => {
     clearInterval(intervalId)
   }
   return (
-    <nav className="navbar-bg-container">
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
-        alt="website logo"
-        className="website-logo"
-      />
-
-      <div className="timer-container">
-        <div className="score-container">
-          <p className="score-para">
-            Score: <span className="span-element">{scores}</span>
-          </p>
-        </div>
+    <ul className="unordered-list">
+      <nav className="navbar-bg-container">
         <img
-          src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
-          alt="timer"
-          className="timer-logo"
+          src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
+          alt="website logo"
+          className="website-logo"
         />
-        <p className="sec-count">{seconds} sec</p>
-      </div>
-    </nav>
+
+        <div className="timer-container">
+          <div className="score-container">
+            <p className="score-para">
+              Score: <span className="span-element">{scores}</span>
+            </p>
+          </div>
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+            alt="timer"
+            className="timer-logo"
+          />
+          <p className="sec-count">{seconds} sec</p>
+        </div>
+      </nav>
+    </ul>
   )
 }
 
